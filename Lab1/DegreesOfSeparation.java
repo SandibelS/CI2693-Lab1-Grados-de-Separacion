@@ -45,6 +45,7 @@ class DegreesOfSeparation{
 
             // Dado que se trata de un grafo no dirigido, se añande tanto
             // la arita (person1, person2) como (person2, person1)
+            // Se asume que el archivo input.text solo una de estas aristas.
             neighborsPer1.add(indPerson2);
             neighborsPer2.add(indPerson1);
         }
