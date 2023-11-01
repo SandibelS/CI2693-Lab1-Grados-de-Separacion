@@ -12,20 +12,17 @@ class DegreesOfSeparation{
 
     private HashMap<String, Integer> vertices;
     private ArrayList<ArrayList<Integer>> edges;
-    private Integer nextInd;
 
     public DegreesOfSeparation(Set<String> vertexSet, ArrayList<Pair<String>> edges){
 
         // Inicializamos el grafo
-
         this.vertices = new HashMap<>();
         this.edges = new ArrayList<ArrayList<Integer>>();
-        this.nextInd = 0;
+        Integer nextInd = 0;
 
         for (String vertex: vertexSet){
-        
             this.vertices.put(vertex, nextInd);
-            this.nextInd++;
+            nextInd++;
         }
 
         for (int i = 0; i < vertexSet.size(); i++ ){
@@ -56,7 +53,7 @@ class DegreesOfSeparation{
         // Si alguno de los vertices no esta en el grafo, entoces no existe un
         // grado de separacion entre start o end  
         if (!this.vertices.containsKey(start) || !this.vertices.containsKey(end)){
-            return -1;
+            throw new IllegalArgumentException("Uno de los argumentos pasados no es un vertice del grafo");
         }
 
         // Por definicion, el grado de separacion de una persona consigo misma
@@ -91,8 +88,6 @@ class DegreesOfSeparation{
 
         toVisit.add(keyStart);
 
-
-
         while (!toVisit.isEmpty()){
 
             Integer keyVertex = toVisit.poll();
@@ -123,41 +118,47 @@ class DegreesOfSeparation{
     public static void main(String[] args){
 
         try {
-        File input = new File("input.txt");
-        Scanner reader = new Scanner(input);
-        
-        // Vamos a agregar al conjunto vertexSet los nombres que 
-        // aparezcan en input.txt y a edges le agregamos un par
-        // que representa la relacion de amistad de cada linea.
-        Set<String> vertexSet = new HashSet<String>();
-        ArrayList<Pair<String>> edges = new ArrayList<Pair<String>>();
-
-        while (reader.hasNextLine()) {
+            File input = new File("input.txt");
+            Scanner reader = new Scanner(input);
             
-                String data = reader.nextLine();
-                String[] friends = data.split(" ");
+            // Vamos a agregar al conjunto vertexSet los nombres que 
+            // aparezcan en input.txt y a edges le agregamos un par
+            // que representa la relacion de amistad de cada linea.
+            Set<String> vertexSet = new HashSet<String>();
+            ArrayList<Pair<String>> edges = new ArrayList<Pair<String>>();
 
-                vertexSet.add(friends[0]);
-                vertexSet.add(friends[1]);
+            while (reader.hasNextLine()) {
+                
+                    String data = reader.nextLine();
+                    String[] friends = data.split(" ");
 
-                Pair<String> edge = new Pair<String>(friends[0], friends[1]);
-                edges.add(edge);
+                    vertexSet.add(friends[0]);
+                    vertexSet.add(friends[1]);
 
-        }
-        reader.close();
+                    Pair<String> edge = new Pair<String>(friends[0], friends[1]);
+                    edges.add(edge);
 
-        // Creamos el grafo a partir de los datos recogidos.
-        DegreesOfSeparation graph = new DegreesOfSeparation(vertexSet, edges);
+            }
+            reader.close();
 
-        // Revisamos que se esten pasado los dos parametros esperados
-        if(args.length !=2){
-            System.out.println("errror: se esperan como argumentos dos nombres");
-            System.exit(1);
-        }
+            // Creamos el grafo a partir de los datos recogidos.
+            DegreesOfSeparation graph = new DegreesOfSeparation(vertexSet, edges);
 
-        // Finalmente llamamos a la funcion de grado de separacion con los 
-        // argumentos pasados e imprimos el grado
-        System.out.println(graph.degreeOfSeparation(args[0], args[1]));
+            // Revisamos que se esten pasado los dos parametros esperados
+            if(args.length !=2){
+                System.out.println("error: se esperan como argumentos dos nombres");
+                System.exit(1);
+            }
+
+            // Finalmente llamamos a la funcion de grado de separacion con los 
+            // argumentos pasados e imprimos el grado
+            try {
+                System.out.println(graph.degreeOfSeparation(args[0], args[1]));
+            } catch (IllegalArgumentException e){
+                System.out.println("error: una de las personas en los argumentos no esta en el archivo input.txt");
+                e.printStackTrace();
+            }
+            
 
         } catch (FileNotFoundException e) {
             System.out.println("Ha ocurrido un error con el archivo input.txt");
