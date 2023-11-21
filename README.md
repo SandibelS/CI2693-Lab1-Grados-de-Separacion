@@ -1,10 +1,4 @@
-# CI2693 Laboratorios
-
-Sandibel Soares, 1710614.
-
-Repositorio destinado a guardar los laboratorios elaborados para la materia CI2693.
-
-## Laboratorio 1: Grados de separación
+# Laboratorio 1: Grados de separación
 
 Para este laboratorio se usó el algoritmo BFS ligeramente modificado para calcular el grado 
 de separacion entre dos vertices. También se usó la siguiente representacion para el grafo:
